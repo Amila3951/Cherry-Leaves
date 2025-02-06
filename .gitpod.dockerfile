@@ -2,6 +2,7 @@ FROM gitpod/workspace-base
 
 RUN echo "CI version from base"
 
+
 ### Python ###
 USER gitpod
 RUN sudo install-packages python3-pip
@@ -38,6 +39,20 @@ RUN echo 'alias heroku_config=". $GITPOD_REPO_ROOT/.vscode/heroku_config.sh"' >>
     echo 'alias arctictern="python3 $GITPOD_REPO_ROOT/.vscode/arctictern.py"' >> ~/.bashrc && \
     echo 'alias font_fix="python3 $GITPOD_REPO_ROOT/.vscode/font_fix.py"' >> ~/.bashrc && \
     echo 'alias make_url="python3 $GITPOD_REPO_ROOT/.vscode/make_url.py "' >> ~/.bashrc
+
+
+# Create the virtual environment in a standard location 
+RUN python3 -m venv .venv
+
+# Activate the virtual environment
+RUN echo "source .venv/bin/activate" >> ~/.bashrc
+
+# Install TensorFlow and Pillow
+RUN source.venv/bin/activate && pip install tensorflow Pillow
+
+# Install project dependencies 
+COPY requirements.txt .  # Assuming you have a requirements.txt
+RUN source .venv/bin/activate && pip install -r requirements.txt
 
 # Local environment variables
 ENV PORT="8080"

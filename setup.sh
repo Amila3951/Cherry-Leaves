@@ -1,3 +1,4 @@
+source.venv/bin/activate
 mkdir -p ~/.streamlit/
 echo "\
 [server]\n\
